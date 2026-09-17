@@ -15,8 +15,6 @@
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <script>
-// Static hosting: some hosts won't serve dotfiles, so the slot sidecar ships as
-// slots.json and the component's document-relative fetch is pointed at it.
 (function(){
   var of = window.fetch;
   window.fetch = function(u){
@@ -681,13 +679,37 @@ class Component extends DCLogic {
     document.addEventListener('keydown', this.kick, true);
   }
 
+  // play() MUST be called synchronously inside the gesture. Routing it through
+  // setState defers it past the tap, and Safari/iOS then rejects it silently —
+  // which is why the jukebox (direct play) worked while the loops stayed mute.
+  startEl = (el, track, volume) => {
+    if (!el || !track) return false;
+    el.muted = !this.state.sound;
+    el.volume = volume;
+    if (el.src !== this.abs(track.url)) el.src = track.url;
+    el.play().catch(() => {});
+    return true;
+  };
+
+  startCover = () => {
+    const s = this.state;
+    this.startEl(this._coverEl, s.coverTrack, s.coverVol);
+    this.setState({ coverOn: true, coverOff: false });
+  };
+  startLoop = () => {
+    const s = this.state;
+    this.startEl(this._loopEl, s.loop, s.loopVol);
+    this.setState({ loopOn: true, loopOff: false });
+  };
+
   // First real gesture: start whatever loop belongs to the screen you're on,
   // unless you deliberately paused it. Autoplay is blocked before this point.
   kick = () => {
-    const s = this.state, want = {};
-    if (s.loop && !s.loopOff && !s.loopOn && (s.reader || s.focusKey || s.screen === 'issue') && !s.cover) want.loopOn = true;
-    if (s.coverTrack && !s.coverOff && !s.coverOn && s.cover && !s.reader && !s.focusKey) want.coverOn = true;
-    if (Object.keys(want).length) this.setState(want, this.sync);
+    const s = this.state;
+    const wantLoop = s.loop && !s.loopOff && (s.reader || s.focusKey || s.screen === 'issue') && !s.cover;
+    const wantCover = s.coverTrack && !s.coverOff && s.cover && !s.reader && !s.focusKey;
+    if (wantLoop && this._loopEl && this._loopEl.paused) this.startLoop();
+    else if (wantCover && this._coverEl && this._coverEl.paused) this.startCover();
     else this.sync();
   };
 
@@ -1190,7 +1212,11 @@ class Component extends DCLogic {
       coverTrackName: s.coverTrack ? s.coverTrack.name : 'Add a looping theme',
       coverPlayIcon: s.coverPlaying ? 'ph-fill ph-pause' : 'ph-fill ph-play',
       coverAudioColor: s.coverPlaying ? acc : 'var(--color-neutral-300)',
-      toggleCoverAudio: () => this.setState({ coverOn: !s.coverPlaying, coverOff: !!s.coverPlaying }),
+      toggleCoverAudio: () => {
+        const el = this._coverEl;
+        if (el && !el.paused) { el.pause(); this.setState({ coverOn: false, coverOff: true }); }
+        else this.startCover();
+      },
       setCoverVol: (e) => { const v = parseFloat(e.target.value); this.setState({ coverVol: v }, () => this.saveVols()); },
       onPickCover: (e) => this.addCoverTrack(e.target.files && e.target.files[0]),
       onDropCover: (e) => { e.preventDefault(); e.stopPropagation(); this.addCoverTrack(e.dataTransfer.files && e.dataTransfer.files[0]); },
@@ -1230,7 +1256,11 @@ class Component extends DCLogic {
       loopHint: s.loop ? (s.loopPlaying ? 'Looping through Issue Zero' : 'Paused — tap play') : 'Drop an MP3 here, or choose a file — it loops',
       loopIcon: s.loopPlaying ? 'ph-fill ph-pause' : 'ph-fill ph-play',
       loopColor: s.loopPlaying ? acc : 'var(--color-neutral-400)',
-      toggleLoop: () => this.setState({ loopOn: !s.loopPlaying, loopOff: !!s.loopPlaying }),
+      toggleLoop: () => {
+        const el = this._loopEl;
+        if (el && !el.paused) { el.pause(); this.setState({ loopOn: false, loopOff: true }); }
+        else this.startLoop();
+      },
       setLoopVol: (e) => { const v = parseFloat(e.target.value); this.setState({ loopVol: v }, () => this.saveVols()); },
       clearLoop: () => { this.delAudio('__loop'); if (this._loopEl) this._loopEl.pause(); this.setState({ loop: null, loopOn: false }); },
       onPickLoop: (e) => this.addLoop(e.target.files && e.target.files[0]),
