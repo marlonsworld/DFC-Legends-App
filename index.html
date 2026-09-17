@@ -796,13 +796,17 @@ class Component extends DCLogic {
     Object.values(this._pool || {}).forEach(a => a.pause());
   }
 
+  // el.src always reads back absolute, so a relative track path never compares
+  // equal — without this every sync() reassigned src and restarted the track.
+  abs = (u) => { try { return new URL(u, location.href).href; } catch (e) { return u; } };
+
   sync = () => {
     const s = this.state, a = this._loopEl;
     if (a) {
       a.muted = !s.sound;
       a.volume = s.loopVol;
       const want = s.loop && s.loopOn && (s.reader || s.focusKey || s.screen === 'issue') && !s.cover;
-      if (want) { if (a.src !== s.loop.url) a.src = s.loop.url; if (a.paused) a.play().catch(() => {}); }
+      if (want) { if (a.src !== this.abs(s.loop.url)) a.src = s.loop.url; if (a.paused) a.play().catch(() => {}); }
       else if (!a.paused) a.pause();
     }
     const c = this._coverEl;
@@ -810,7 +814,7 @@ class Component extends DCLogic {
       c.muted = !s.sound;
       c.volume = s.coverVol;
       const wantC = s.coverTrack && s.coverOn && s.cover && !s.reader && !s.focusKey;
-      if (wantC) { if (c.src !== s.coverTrack.url) c.src = s.coverTrack.url; if (c.paused) c.play().catch(() => {}); }
+      if (wantC) { if (c.src !== this.abs(s.coverTrack.url)) c.src = s.coverTrack.url; if (c.paused) c.play().catch(() => {}); }
       else if (!c.paused) c.pause();
     }
     Object.keys(this._pool || {}).forEach(k => {
@@ -825,7 +829,7 @@ class Component extends DCLogic {
     if (!t) return null;
     let a = this._pool[key];
     if (!a) { a = new Audio(); a.loop = false; this._pool[key] = a; a.addEventListener('ended', () => this.setState(s => ({ playing: Object.assign({}, s.playing, { [key]: false }) }))); }
-    if (a.src !== t.url) a.src = t.url;
+    if (a.src !== this.abs(t.url)) a.src = t.url;
     return a;
   };
 
