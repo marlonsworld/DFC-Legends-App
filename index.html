@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_ds/nocturne-0733b980-6e87-4895-89e5-0889adedbd7d/styles.css">
+<script src="_ds/nocturne-0733b980-6e87-4895-89e5-0889adedbd7d/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<script>
+// Static hosting: some hosts won't serve dotfiles, so the slot sidecar ships as
+// slots.json and the component's document-relative fetch is pointed at it.
+(function(){
+  var of = window.fetch;
+  window.fetch = function(u){
+    if (typeof u === 'string' && u.indexOf('.image-slots.state.json') !== -1)
+      return of.call(this, 'slots.json');
+    return of.apply(this, arguments);
+  };
+})();
+</script>
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:var(--color-bg)}
+a{color:var(--color-accent);text-decoration:none}
+a:hover{color:var(--color-accent-300)}
+*{-webkit-tap-highlight-color:transparent}
+::-webkit-scrollbar{width:0;height:0}
+input[type=range]{accent-color:var(--color-accent);height:16px}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes panelIn{from{opacity:0;transform:scale(1.03)}to{opacity:1;transform:scale(1)}}
+@keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(145,132,217,.5)}70%{box-shadow:0 0 0 12px rgba(145,132,217,0)}100%{box-shadow:0 0 0 0 rgba(145,132,217,0)}}
+@keyframes breathe{0%,100%{opacity:.5}50%{opacity:1}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);display:flex;gap:40px;align-items:flex-start;justify-content:center;padding:40px 28px">
+
+  <div style="display:flex;flex-direction:column;gap:12px;align-items:center">
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+
+      <div style="position:relative;height:100%;width:100%;padding-top:54px;box-sizing:border-box;background:var(--color-bg);overflow:hidden;display:flex;flex-direction:column" onPointerDown="{{ onDown }}" onPointerUp="{{ onUp }}">
+
+        <sc-if value="{{ chromeVisible }}" hint-placeholder-val="{{ true }}">
+          <header style="display:flex;align-items:center;justify-content:space-between;padding:2px 20px 10px;flex:none">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="width:24px;height:24px;border-radius:6px;overflow:hidden;display:block;border:1px solid var(--color-divider);flex:none">
+                <image-slot id="bz-brandmark" shape="rect" fit="contain" placeholder=" "></image-slot>
+              </span>
+              <span style="font-family:var(--font-heading);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--color-neutral-200)">{{ seriesTitle }}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;color:var(--color-neutral-400)">
+              <i class="ph ph-magnifying-glass" style="font-size:19px"></i>
+              <span style="position:relative;display:block"><i class="ph ph-bell" style="font-size:19px"></i><span style="position:absolute;top:0;right:-1px;width:6px;height:6px;border-radius:50%;background:var(--color-accent)"></span></span>
+            </div>
+          </header>
+        </sc-if>
+
+        <div style="flex:1;overflow-y:auto;overscroll-behavior:contain">
+
+          <!-- ISSUE ZERO -->
+          <sc-if value="{{ isIssue }}" hint-placeholder-val="{{ true }}">
+            <section style="padding:0 20px">
+              <div style="font:500 10px var(--font-heading);letter-spacing:.24em;text-transform:uppercase;color:var(--color-accent-300)">Book Zero · The prelude</div>
+              <h2 style="font-size:28px;margin:5px 0 4px;letter-spacing:-.02em">Issue Zero</h2>
+              <p style="font-size:12.5px;color:var(--color-neutral-500);margin:0 0 16px;line-height:1.5;text-wrap:pretty">Five pages, four panels each. Touch a panel and it answers — sound, second image, held.</p>
+
+              <div onClick="{{ openIssue }}" style="position:relative;height:212px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--color-divider);cursor:pointer">
+                <image-slot id="bz-issue-hero" shape="rect" src="issue_hero.gif" placeholder="Issue Zero key art or GIF"></image-slot>
+                <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(22,24,38,.96) 10%,rgba(22,24,38,.1) 62%,rgba(22,24,38,.45))"></div>
+                <div style="position:absolute;left:16px;right:16px;bottom:14px;pointer-events:none">
+                  <div style="font-family:var(--font-heading);font-size:22px;letter-spacing:-.015em">Enter the issue</div>
+                  <div style="font-size:11.5px;color:var(--color-neutral-400);margin-top:5px">{{ touchedCount }} of {{ panelTotal }} panels awakened</div>
+                </div>
+              </div>
+
+              <!-- CHAPTER SCORE -->
+              <div onDragOver="{{ allowDrop }}" onDrop="{{ onDropLoop }}" style="margin-top:16px;border:1px solid var(--color-accent-800);background:color-mix(in srgb,var(--color-accent) 8%,transparent);border-radius:var(--radius-md);padding:12px 13px">
+                <div style="display:flex;align-items:center;gap:11px">
+                  <button onClick="{{ toggleLoop }}" style="width:36px;height:36px;flex:none;border-radius:50%;border:1px solid var(--color-accent);background:transparent;color:var(--color-accent);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:color-mix(in srgb,var(--color-accent) 16%,transparent)"><i class="{{ loopIcon }}" style="font-size:15px"></i></button>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ loopName }}</div>
+                    <div style="font-size:11px;color:var(--color-neutral-500);margin-top:2px">{{ loopHint }}</div>
+                  </div>
+                  <sc-if value="{{ hasLoop }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ clearLoop }}" style="background:transparent;border:0;color:var(--color-neutral-500);cursor:pointer;padding:4px;display:flex"><i class="ph ph-trash" style="font-size:16px"></i></button>
+                  </sc-if>
+                </div>
+                <div style="display:flex;gap:9px;align-items:center;margin-top:11px">
+                  <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:8px 12px;border-radius:var(--radius-md);border:1px dashed var(--color-neutral-700);color:var(--color-neutral-300);font:500 12px var(--font-heading);cursor:pointer" style-hover="border-color:var(--color-accent);color:var(--color-accent-200)">
+                    <i class="ph ph-music-notes-plus" style="font-size:15px"></i>Chapter loop — MP3
+                    <input type="file" accept="audio/*" onChange="{{ onPickLoop }}" style="display:none"></input>
+                  </label>
+                  <i class="ph ph-speaker-low" style="font-size:15px;color:var(--color-neutral-500)"></i>
+                  <input type="range" min="0" max="1" step="0.01" value="{{ loopVol }}" onChange="{{ setLoopVol }}" onInput="{{ setLoopVol }}" style="width:86px"></input>
+                </div>
+              </div>
+
+              <h3 style="font-size:14px;margin:24px 0 11px;color:var(--color-neutral-300)">Pages</h3>
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <sc-for list="{{ pageCards }}" as="p" hint-placeholder-count="8">
+                  <div onClick="{{ p.open }}" style="cursor:pointer">
+                    <div style="position:relative;aspect-ratio:3/4;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--color-divider);display:grid;grid-template-columns:1fr;grid-template-rows:repeat(4,1fr);gap:2px;background:var(--color-neutral-800)">
+                      <sc-for list="{{ p.thumbs }}" as="t" hint-placeholder-count="4">
+                        <span style="position:relative;display:block;overflow:hidden"><image-slot id="{{ t.slot }}" shape="rect" placeholder=" "></image-slot></span>
+                      </sc-for>
+                      <span style="position:absolute;top:7px;left:7px;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;background:rgba(22,24,38,.86);border-radius:4px;padding:3px 6px;color:{{ p.badgeColor }}">{{ p.badge }}</span>
+                    </div>
+                    <div style="font-size:13px;margin-top:8px;line-height:1.35;text-wrap:pretty">{{ p.title }}</div>
+                    <div style="font-size:11px;color:var(--color-neutral-500);margin-top:2px">{{ p.meta }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+          </sc-if>
+
+          <!-- BONUS FEATURES -->
+          <sc-if value="{{ isBonus }}" hint-placeholder-val="{{ false }}">
+            <section style="padding:0 20px">
+              <h2 style="font-size:26px;margin:2px 0 3px">Bonus features</h2>
+              <p style="font-size:12.5px;color:var(--color-neutral-500);margin:0 0 16px">Six extra pages · full screen, zoomable, scoreable</p>
+
+              <div onClick="{{ openBonusCover }}" style="position:relative;height:236px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--color-divider);cursor:pointer">
+                <image-slot id="bz-bonus-0" shape="rect" placeholder="Graffiti showcase cover art or GIF"></image-slot>
+                <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(22,24,38,.96) 12%,rgba(22,24,38,.08) 64%,rgba(22,24,38,.4))"></div>
+                <div style="position:absolute;left:16px;right:16px;bottom:14px;pointer-events:none">
+                  <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--color-accent-300)">Bonus cover</div>
+                  <div style="font-family:var(--font-heading);font-size:25px;line-height:1.1;margin-top:4px;letter-spacing:-.015em;text-wrap:pretty">DFC Legends graffiti showcase</div>
+                  <div style="font-size:11.5px;color:var(--color-neutral-400);margin-top:7px">Open the showcase · 6 pages</div>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;margin-top:18px">
+                <sc-for list="{{ bonusGrid }}" as="b" hint-placeholder-count="6">
+                  <div onClick="{{ b.open }}" style="cursor:pointer">
+                    <div style="position:relative;aspect-ratio:3/4;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--color-divider)">
+                      <image-slot id="{{ b.slot }}" shape="rect" placeholder="Graffiti page"></image-slot>
+                      <span style="position:absolute;top:8px;left:8px;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;background:rgba(22,24,38,.82);border-radius:4px;padding:3px 6px;color:var(--color-accent-300)">{{ b.badge }}</span>
+                    </div>
+                    <div style="font-size:13px;margin-top:8px;line-height:1.35;text-wrap:pretty">{{ b.title }}</div>
+                    <div style="font-size:11px;color:var(--color-neutral-500);margin-top:2px;line-height:1.4">{{ b.caption }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+          </sc-if>
+
+          <!-- JUKEBOX -->
+          <sc-if value="{{ isJukebox }}" hint-placeholder-val="{{ false }}">
+            <section style="padding:0 20px">
+              <div style="position:relative;aspect-ratio:1/1;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--color-divider)">
+                <image-slot id="bz-jukebox-art" shape="rect" placeholder="Jukebox cover art or GIF"></image-slot>
+                <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(22,24,38,.94) 8%,rgba(22,24,38,0) 58%)"></div>
+                <div style="position:absolute;left:16px;right:16px;bottom:13px;pointer-events:none">
+                  <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--color-accent-300)">Jukebox</div>
+                  <div style="font-family:var(--font-heading);font-size:25px;line-height:1.1;margin-top:4px;letter-spacing:-.02em">The Issue Zero Score</div>
+                  <div style="font-size:11.5px;color:var(--color-neutral-400);margin-top:6px">{{ jukeboxCount }} of 7 tracks loaded</div>
+                </div>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:18px">
+                <sc-for list="{{ jukebox }}" as="j" hint-placeholder-count="7">
+                  <div onDragOver="{{ allowDrop }}" onDrop="{{ j.onDrop }}" style="border:1px solid {{ j.border }};border-radius:var(--radius-md);padding:9px;background:var(--color-surface);transition:border-color .3s">
+                    <div style="display:flex;align-items:center;gap:11px">
+                      <label style="position:relative;width:52px;height:52px;flex:none;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--color-divider);cursor:pointer;display:block">
+                        <image-slot id="{{ j.slot }}" shape="rect" placeholder=" "></image-slot>
+                      </label>
+                      <div style="flex:1;min-width:0">
+                        <div style="display:flex;align-items:baseline;gap:7px">
+                          <span style="font:500 9.5px var(--font-heading);color:var(--color-neutral-600)">{{ j.no }}</span>
+                          <span style="flex:1;min-width:0;font-size:13px;color:{{ j.titleColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ j.title }}</span>
+                        </div>
+                        <div style="font-size:10.5px;color:var(--color-neutral-500);margin-top:2px">{{ j.hint }}</div>
+                        <div style="display:flex;align-items:center;gap:7px;margin-top:6px">
+                          <i class="ph ph-speaker-low" style="font-size:12px;color:var(--color-neutral-600)"></i>
+                          <input type="range" min="0" max="1" step="0.01" value="{{ j.vol }}" onChange="{{ j.setVol }}" onInput="{{ j.setVol }}" style="flex:1;min-width:0"></input>
+                        </div>
+                      </div>
+                      <div style="display:flex;flex-direction:column;gap:5px;flex:none">
+                        <button onClick="{{ j.play }}" style="width:30px;height:30px;border-radius:50%;border:1px solid var(--color-accent);background:transparent;color:{{ j.playColor }};cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:color-mix(in srgb,var(--color-accent) 16%,transparent)"><i class="{{ j.playIcon }}" style="font-size:12px"></i></button>
+                        <button onClick="{{ j.stop }}" style="width:30px;height:30px;border-radius:50%;border:1px solid var(--color-divider);background:transparent;color:{{ j.stopColor }};cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="border-color:var(--color-neutral-500)"><i class="ph-fill ph-stop" style="font-size:11px"></i></button>
+                      </div>
+                    </div>
+                    <label style="display:flex;align-items:center;justify-content:center;gap:7px;margin-top:9px;padding:7px 10px;border-radius:var(--radius-md);border:1px dashed var(--color-neutral-700);color:var(--color-neutral-400);font:500 11.5px var(--font-heading);cursor:pointer" style-hover="border-color:var(--color-accent);color:var(--color-accent-200)">
+                      <i class="ph ph-music-note-simple" style="font-size:14px"></i>MP3 for track {{ j.no }}
+                      <input type="file" accept="audio/*" onChange="{{ j.onPick }}" style="display:none"></input>
+                    </label>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+          </sc-if>
+
+          <!-- COMMUNITY -->
+          <sc-if value="{{ isCommunity }}" hint-placeholder-val="{{ true }}">
+            <section style="padding:0 20px">
+              <h2 style="font-size:26px;margin:2px 0 4px">Community</h2>
+              <p style="font-size:12.5px;color:var(--color-neutral-500);margin:0 0 16px">Book Zero is the invitation. This is where it gets loud.</p>
+
+              <div style="border:1px solid var(--color-accent-800);background:color-mix(in srgb,var(--color-accent) 8%,transparent);border-radius:var(--radius-md);padding:13px;margin-bottom:18px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <i class="ph ph-broadcast" style="font-size:19px;color:var(--color-accent);animation:breathe 2.6s ease-in-out infinite"></i>
+                  <div style="flex:1">
+                    <div style="font-size:13.5px">Book One is coming</div>
+                    <div style="font-size:11px;color:var(--color-neutral-500);margin-top:1px">Follow the build · new panel every Friday</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:7px;margin-top:12px">
+                  <sc-for list="{{ socials }}" as="so" hint-placeholder-count="3">
+                    <button style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 0;border-radius:var(--radius-md);border:1px solid var(--color-accent);background:transparent;color:var(--color-accent);font:500 11.5px var(--font-heading);cursor:pointer" style-hover="background:color-mix(in srgb,var(--color-accent) 14%,transparent)"><i class="{{ so.icon }}" style="font-size:14px"></i>{{ so.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="display:flex;gap:0;border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:3px;margin-bottom:18px">
+                <sc-for list="{{ feeds }}" as="f" hint-placeholder-count="3">
+                  <button onClick="{{ f.pick }}" style="flex:1;font:500 12px var(--font-heading);padding:7px 0;border-radius:6px;cursor:pointer;border:0;background:{{ f.bg }};color:{{ f.fg }}">{{ f.label }}</button>
+                </sc-for>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <sc-for list="{{ feedItems }}" as="i" hint-placeholder-count="3">
+                  <div style="display:flex;gap:12px;align-items:flex-start">
+                    <div style="flex:none;width:{{ i.thumbW }};height:{{ i.thumbH }};border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--color-divider)">
+                      <image-slot id="{{ i.slot }}" shape="rect" placeholder=" "></image-slot>
+                    </div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:13.5px;line-height:1.4;text-wrap:pretty">{{ i.title }}</div>
+                      <div style="font-size:11.5px;color:var(--color-neutral-500);margin-top:4px">{{ i.meta }}</div>
+                    </div>
+                    <i class="ph ph-arrow-up-right" style="font-size:15px;color:var(--color-neutral-600);margin-top:2px"></i>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+          </sc-if>
+
+          <!-- STORE -->
+          <sc-if value="{{ isStore }}" hint-placeholder-val="{{ true }}">
+            <section style="padding:0 20px">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between">
+                <h2 style="font-size:26px;margin:2px 0 14px">Store</h2>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;color:var(--color-neutral-300);font-size:12.5px"><i class="ph ph-shopping-bag" style="font-size:18px"></i>{{ cartCount }}</div>
+              </div>
+              <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:14px">
+                <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+                  <button onClick="{{ f.pick }}" style="flex:none;font:500 12px var(--font-heading);padding:6px 12px;border-radius:999px;cursor:pointer;background:{{ f.bg }};border:1px solid {{ f.bc }};color:{{ f.fg }}">{{ f.label }}</button>
+                </sc-for>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 12px">
+                <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+                  <div onClick="{{ p.open }}" style="cursor:pointer">
+                    <div style="position:relative;aspect-ratio:1/1;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--color-divider);background:var(--color-surface)">
+                      <image-slot id="{{ p.slot }}" shape="rect" placeholder="Product"></image-slot>
+                    </div>
+                    <div style="font-size:13px;margin-top:8px;line-height:1.35;text-wrap:pretty">{{ p.name }}</div>
+                    <div style="display:flex;align-items:center;gap:7px;margin-top:4px">
+                      <span style="font-size:12.5px;color:var(--color-accent-300)">{{ p.price }}</span>
+                      <span style="font-size:11px;color:var(--color-neutral-600)">{{ p.kind }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+          </sc-if>
+
+          <div style="height:104px"></div>
+        </div>
+
+        <!-- NAV: TABS -->
+        <sc-if value="{{ navTabs }}" hint-placeholder-val="{{ true }}">
+          <nav style="position:absolute;left:0;right:0;bottom:0;display:flex;padding:9px 8px 26px;background:linear-gradient(to top,rgba(22,24,38,.98) 62%,rgba(22,24,38,0));backdrop-filter:blur(12px);border-top:1px solid var(--color-divider)">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+              <button onClick="{{ t.go }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:0;cursor:pointer;padding:6px 0;color:{{ t.color }}">
+                <i class="{{ t.icon }}" style="font-size:20px"></i>
+                <span style="font:500 9px var(--font-heading);letter-spacing:.01em">{{ t.short }}</span>
+              </button>
+            </sc-for>
+          </nav>
+        </sc-if>
+
+        <!-- NAV: SHEET -->
+        <sc-if value="{{ navSheet }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ toggleMenu }}" style="position:absolute;left:50%;bottom:30px;transform:translateX(-50%);display:flex;align-items:center;gap:9px;padding:11px 20px;border-radius:999px;background:rgba(35,37,50,.86);backdrop-filter:blur(14px);border:1px solid var(--color-accent-700);color:var(--color-text);font:500 13px var(--font-heading);cursor:pointer;box-shadow:var(--shadow-lg)" style-hover="border-color:var(--color-accent)">
+            <i class="ph ph-list" style="font-size:17px;color:var(--color-accent)"></i>{{ screenLabel }}
+          </button>
+        </sc-if>
+
+        <!-- NAV: GESTURE -->
+        <sc-if value="{{ navGesture }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;left:0;right:0;bottom:26px;display:flex;flex-direction:column;align-items:center;gap:9px;pointer-events:none">
+            <div style="font:500 10px var(--font-heading);letter-spacing:.18em;text-transform:uppercase;color:var(--color-neutral-500)">{{ screenLabel }}</div>
+            <div style="display:flex;gap:7px;align-items:center">
+              <sc-for list="{{ dots }}" as="d" hint-placeholder-count="4">
+                <span style="width:{{ d.w }};height:4px;border-radius:2px;background:{{ d.bg }};transition:all .22s"></span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- MENU SHEET -->
+        <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ toggleMenu }}" style="position:absolute;inset:0;z-index:40;background:rgba(11,12,20,.6);backdrop-filter:blur(3px);animation:fadeIn .18s ease">
+            <div style="position:absolute;left:0;right:0;bottom:0;background:var(--color-surface);border-top:1px solid var(--color-divider);border-radius:16px 16px 0 0;padding:10px 14px 30px;animation:sheetUp .26s cubic-bezier(.22,1,.36,1)">
+              <div style="width:36px;height:4px;border-radius:2px;background:var(--color-neutral-700);margin:0 auto 12px"></div>
+              <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+                <button onClick="{{ t.go }}" style="display:flex;width:100%;align-items:center;gap:14px;padding:14px 8px;background:transparent;border:0;border-bottom:1px solid var(--color-divider);cursor:pointer;color:{{ t.color }};text-align:left">
+                  <i class="{{ t.icon }}" style="font-size:20px"></i>
+                  <span style="font:500 15px var(--font-heading);flex:1">{{ t.label }}</span>
+                  <span style="font-size:11.5px;color:var(--color-neutral-600)">{{ t.hint }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- PRODUCT SHEET -->
+        <sc-if value="{{ hasProduct }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;background:rgba(11,12,20,.62);backdrop-filter:blur(3px);animation:fadeIn .18s ease">
+            <div style="position:absolute;left:0;right:0;bottom:0;background:var(--color-surface);border-top:1px solid var(--color-divider);border-radius:16px 16px 0 0;padding:10px 18px 28px;animation:sheetUp .26s cubic-bezier(.22,1,.36,1)">
+              <div style="width:36px;height:4px;border-radius:2px;background:var(--color-neutral-700);margin:0 auto 14px"></div>
+              <div style="display:flex;gap:14px">
+                <div style="width:104px;height:104px;flex:none;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--color-divider)">
+                  <image-slot id="{{ product.slot }}" shape="rect" placeholder=" "></image-slot>
+                </div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-family:var(--font-heading);font-size:18px;line-height:1.2;text-wrap:pretty">{{ product.name }}</div>
+                  <div style="font-size:12.5px;color:var(--color-neutral-500);margin-top:6px;line-height:1.45">{{ product.blurb }}</div>
+                  <div style="font-size:17px;color:var(--color-accent-300);margin-top:9px">{{ product.price }}</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:10px;margin-top:18px">
+                <button onClick="{{ closeProduct }}" style="flex:none;padding:11px 16px;border-radius:var(--radius-md);border:1px solid var(--color-divider);background:transparent;color:var(--color-text);font:500 13.5px var(--font-heading);cursor:pointer">Close</button>
+                <button onClick="{{ addToCart }}" style="flex:1;padding:11px 16px;border-radius:var(--radius-md);border:1px solid var(--color-accent);background:transparent;color:var(--color-accent);font:500 13.5px var(--font-heading);cursor:pointer" style-hover="background:color-mix(in srgb,var(--color-accent) 14%,transparent)">{{ cartCta }}</button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- COVER -->
+        <sc-if value="{{ isCover }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;inset:0;background:#0d0e18;animation:fadeIn .24s ease">
+            <div style="position:absolute;inset:0">
+              <image-slot id="bz-cover" shape="rect" src="cover_00.gif" placeholder="Drop Book Zero cover art or an animated GIF"></image-slot>
+            </div>
+            <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(13,14,24,.78) 0,rgba(13,14,24,.12) 26%,rgba(13,14,24,.1) 44%,rgba(13,14,24,.94) 86%)"></div>
+
+            <div style="position:absolute;top:62px;left:20px;width:52px;height:52px;border-radius:12px;overflow:hidden;border:1px solid var(--color-divider);background:rgba(22,24,38,.55);backdrop-filter:blur(8px)">
+              <image-slot id="bz-brandmark" shape="rect" fit="contain" placeholder="Logo"></image-slot>
+            </div>
+
+            <div style="position:absolute;left:20px;right:20px;bottom:38px">
+              <div style="font:500 10px var(--font-heading);letter-spacing:.24em;text-transform:uppercase;color:var(--color-accent-300)">BOOK ZERO · AN INTRODUCTION TO WHAT IS COMING</div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:40px;line-height:1.03;letter-spacing:-.025em;margin-top:8px;color:var(--color-neutral-100)">{{ seriesTitle }}</div>
+              <div style="font-size:13px;color:var(--color-neutral-400);margin-top:9px;max-width:86%;line-height:1.5;text-wrap:pretty">One issue, five pages, twenty panels that will take you on a journey. Experience Next-Level immersive graphics and sound.</div>
+
+              <div onDragOver="{{ allowDrop }}" onDrop="{{ onDropCover }}" style="display:flex;align-items:center;gap:9px;margin-top:16px;padding:8px 10px;border-radius:999px;background:rgba(22,24,38,.62);backdrop-filter:blur(10px);border:1px solid var(--color-divider)">
+                <button onClick="{{ toggleCoverAudio }}" style="width:28px;height:28px;flex:none;border-radius:50%;border:1px solid var(--color-accent);background:transparent;color:{{ coverAudioColor }};cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:color-mix(in srgb,var(--color-accent) 16%,transparent)"><i class="{{ coverPlayIcon }}" style="font-size:12px"></i></button>
+                <label style="flex:1;min-width:0;cursor:pointer">
+                  <span style="display:block;font-size:11.5px;color:var(--color-neutral-200);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ coverTrackName }}</span>
+                  <span style="display:block;font-size:9.5px;color:var(--color-neutral-500);margin-top:1px">Cover theme · loops</span>
+                  <input type="file" accept="audio/*" onChange="{{ onPickCover }}" style="display:none"></input>
+                </label>
+                <i class="ph ph-speaker-low" style="font-size:13px;color:var(--color-neutral-500)"></i>
+                <input type="range" min="0" max="1" step="0.01" value="{{ coverVol }}" onChange="{{ setCoverVol }}" onInput="{{ setCoverVol }}" style="width:70px;flex:none"></input>
+                <sc-if value="{{ hasCoverTrack }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ clearCoverTrack }}" style="background:transparent;border:0;color:var(--color-neutral-500);cursor:pointer;padding:2px;display:flex"><i class="ph ph-trash" style="font-size:14px"></i></button>
+                </sc-if>
+              </div>
+              <div style="display:flex;justify-content:center;margin-top:20px">
+                <button onClick="{{ enterApp }}" style="min-width:200px;padding:13px 28px;border-radius:var(--radius-md);border:1px solid var(--color-accent);background:transparent;color:var(--color-accent);font:500 14px var(--font-heading);letter-spacing:.06em;cursor:pointer" style-hover="background:color-mix(in srgb,var(--color-accent) 14%,transparent)">Enter</button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- READER: PAGE OF FOUR PANELS -->
+        <sc-if value="{{ isReader }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;background:#0d0e18;animation:fadeIn .2s ease;overflow:hidden;display:flex;flex-direction:column">
+
+            <div style="flex:none;padding:60px 14px 8px;display:flex;align-items:center;gap:10px">
+              <button onClick="{{ closeReader }}" style="background:transparent;border:0;color:var(--color-neutral-200);cursor:pointer;padding:4px;display:flex"><i class="ph ph-x" style="font-size:20px"></i></button>
+              <div style="flex:1;min-width:0;text-align:center">
+                <div style="font:500 10.5px var(--font-heading);letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-400);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ readerTitle }}</div>
+                <div style="font-size:10.5px;color:var(--color-neutral-600);margin-top:2px">{{ pageStatus }} · <a href="#" onClick="{{ resetPage }}" style="color:var(--color-accent-300)">reset</a></div>
+              </div>
+              <button onClick="{{ toggleSetup }}" style="background:transparent;border:0;color:{{ setupColor }};cursor:pointer;padding:4px;display:flex"><i class="{{ setupIcon }}" style="font-size:18px"></i></button>
+              <button onClick="{{ toggleLoop }}" style="background:transparent;border:0;color:{{ loopColor }};cursor:pointer;padding:4px;display:flex"><i class="{{ loopIcon }}" style="font-size:18px"></i></button>
+              <button onClick="{{ toggleSound }}" style="background:transparent;border:0;color:{{ soundColor }};cursor:pointer;padding:4px;display:flex"><i class="{{ soundIcon }}" style="font-size:19px"></i></button>
+              <button onClick="{{ toggleMenu }}" style="background:transparent;border:0;color:var(--color-neutral-200);cursor:pointer;padding:4px;display:flex" style-hover="color:var(--color-accent)"><i class="ph ph-list" style="font-size:20px"></i></button>
+            </div>
+
+            <sc-if value="{{ setupOn }}" hint-placeholder-val="{{ false }}">
+              <div style="flex:none;margin:0 12px 6px;padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--color-accent-800);background:color-mix(in srgb,var(--color-accent) 10%,transparent);display:flex;align-items:center;gap:8px">
+                <i class="ph ph-images-square" style="font-size:14px;color:var(--color-accent)"></i>
+                <span style="flex:1;font-size:10.5px;color:var(--color-neutral-300);line-height:1.35">Fill mode — drop image 1 left, image 2 right. Reveals are paused while this is on.</span>
+                <button onClick="{{ resetPage }}" style="flex:none;background:transparent;border:1px solid var(--color-divider);border-radius:999px;color:var(--color-neutral-400);font:500 10px var(--font-heading);padding:3px 9px;cursor:pointer" style-hover="border-color:var(--color-accent);color:var(--color-accent-200)">Reset page</button>
+                <button onClick="{{ toggleSetup }}" style="flex:none;background:transparent;border:1px solid var(--color-accent);border-radius:999px;color:var(--color-accent);font:500 10px var(--font-heading);padding:3px 11px;cursor:pointer" style-hover="background:color-mix(in srgb,var(--color-accent) 14%,transparent)">Done</button>
+              </div>
+            </sc-if>
+            <div ref="{{ setScroller }}" onScroll="{{ onReaderScroll }}" style="position:relative;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scroll-snap-type:y mandatory;display:flex;flex-direction:column">
+              <sc-for list="{{ readerPages }}" as="pg" hint-placeholder-count="6">
+                <div ref="{{ pg.ref }}" style="flex:none;height:100%;scroll-snap-align:start;position:relative;padding:4px 4px 6px;box-sizing:border-box">
+                  <div style="position:absolute;right:44px;top:8px;z-index:2;display:flex;align-items:center;gap:7px;padding:3px 8px;border-radius:999px;background:rgba(13,14,24,.72);backdrop-filter:blur(6px);pointer-events:none">
+                    <span style="font:500 9px var(--font-heading);letter-spacing:.18em;text-transform:uppercase;color:{{ pg.titleColor }}">{{ pg.no }}</span>
+                    <span style="font-size:9px;color:var(--color-neutral-500)">{{ pg.touched }}</span>
+                  </div>
+                  <sc-if value="{{ pg.isSplash }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;inset:4px 4px 6px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--color-accent-800);background:#101120">
+                      <image-slot id="bz-splash-3a" shape="rect" src="splash_3a.gif" placeholder="Drop the hero splash GIF"></image-slot>
+                      <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(13,14,24,.66) 0,rgba(13,14,24,0) 26%,rgba(13,14,24,0) 52%,rgba(13,14,24,.94) 90%)"></div>
+                      <div style="position:absolute;left:18px;right:18px;bottom:30px;pointer-events:none;display:flex;flex-direction:column;gap:7px">
+                        <div style="font:500 10px var(--font-heading);letter-spacing:.24em;text-transform:uppercase;color:var(--color-accent-300)">Interlude</div>
+                        <div style="font-family:var(--font-heading);font-size:30px;line-height:1.05;letter-spacing:-.02em;color:var(--color-neutral-100);text-wrap:pretty">{{ pg.title }}</div>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ pg.isPanels }}" hint-placeholder-val="{{ true }}">
+                  <div style="height:100%;display:grid;grid-template-columns:1fr;grid-template-rows:repeat(4,1fr);gap:5px">
+                    <sc-for list="{{ pg.panels }}" as="p" hint-placeholder-count="4">
+                      <div style="position:relative;border-radius:var(--radius-sm);overflow:hidden;border:1px solid {{ p.border }};background:#101120;cursor:pointer;transition:border-color .3s">
+                  <sc-if value="{{ p.stacked }}" hint-placeholder-val="{{ true }}">
+                    <div onClick="{{ p.tap }}" style="position:absolute;inset:0">
+                      <span style="position:absolute;inset:0;display:block"><image-slot id="{{ p.slotA }}" shape="rect" src="{{ p.srcA }}" placeholder="Panel — image 1"></image-slot></span>
+                      <span style="position:absolute;inset:0;display:block;opacity:{{ p.revealOpacity }};transition:opacity .55s ease"><image-slot id="{{ p.slotB }}" shape="rect" src="{{ p.srcB }}" placeholder="Panel — image 2 (on touch)"></image-slot></span>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ p.setup }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2px">
+                      <span style="position:relative;display:block;min-width:0;overflow:hidden">
+                        <image-slot id="{{ p.slotA }}" shape="rect" src="{{ p.srcA }}" placeholder="Image 1 — before touch"></image-slot>
+                        <span style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font:500 9px var(--font-heading);letter-spacing:.1em;background:rgba(13,14,24,.88);color:var(--color-neutral-300);border-radius:4px;padding:3px 6px;pointer-events:none;z-index:3">1 · BEFORE</span>
+                      </span>
+                      <span style="position:relative;display:block;min-width:0;overflow:hidden">
+                        <image-slot id="{{ p.slotB }}" shape="rect" src="{{ p.srcB }}" placeholder="Image 2 — after touch"></image-slot>
+                        <span style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font:500 9px var(--font-heading);letter-spacing:.1em;background:rgba(13,14,24,.88);color:var(--color-accent-300);border-radius:4px;padding:3px 6px;pointer-events:none;z-index:3">2 · AFTER</span>
+                      </span>
+                    </div>
+                  </sc-if>
+
+                  <span style="position:absolute;top:6px;left:6px;font:500 9px var(--font-heading);letter-spacing:.14em;background:rgba(13,14,24,.8);border-radius:4px;padding:2px 5px;color:{{ p.labelColor }};pointer-events:none">{{ p.label }}</span>
+
+                  <sc-if value="{{ p.untouched }}" hint-placeholder-val="{{ true }}">
+                    <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;border:1px solid var(--color-accent);display:flex;align-items:center;justify-content:center;pointer-events:none;animation:pulseRing 2.4s ease-out infinite;background:rgba(13,14,24,.42)">
+                      <i class="ph ph-hand-tap" style="font-size:14px;color:var(--color-accent)"></i>
+                    </span>
+                  </sc-if>
+
+                  <button onClick="{{ p.expand }}" style="position:absolute;top:5px;right:5px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(13,14,24,.72);color:var(--color-neutral-200);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="color:var(--color-accent)"><i class="ph ph-arrows-out" style="font-size:13px"></i></button>
+
+                  <sc-if value="{{ p.showVol }}" hint-placeholder-val="{{ true }}">
+                    <div style="position:absolute;right:5px;bottom:5px;display:flex;flex-direction:column;align-items:center;gap:4px;opacity:{{ p.volOpacity }};transition:opacity .2s" style-hover="opacity:1">
+                      <sc-if value="{{ p.volOpen }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;justify-content:center;padding:7px 3px;border-radius:999px;background:rgba(13,14,24,.82);backdrop-filter:blur(6px)">
+                          <input type="range" min="0" max="1" step="0.01" value="{{ p.vol }}" onChange="{{ p.setVol }}" onInput="{{ p.setVol }}" style="writing-mode:vertical-lr;direction:rtl;width:14px;height:58px"></input>
+                        </div>
+                      </sc-if>
+                      <button onClick="{{ p.toggleVol }}" style="width:22px;height:22px;flex:none;border-radius:50%;border:0;background:rgba(13,14,24,.7);color:{{ p.audioColor }};cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0"><i class="{{ p.audioIcon }}" style="font-size:11px"></i></button>
+                    </div>
+                  </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+              <div style="height:34px;flex:none"></div>
+            </div>
+
+            <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+              <div onClick="{{ clearToast }}" style="position:absolute;left:14px;right:14px;bottom:74px;z-index:5;display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:var(--radius-md);background:rgba(22,24,38,.96);border:1px solid var(--color-accent-800);box-shadow:var(--shadow-lg);cursor:pointer">
+                <i class="ph ph-warning-circle" style="font-size:15px;color:var(--color-accent);flex:none"></i>
+                <span style="flex:1;font-size:11px;color:var(--color-neutral-300);line-height:1.4">{{ toast }}</span>
+              </div>
+            </sc-if>
+            <div style="flex:none;padding:8px 16px 28px;display:flex;align-items:center;gap:12px">
+              <button onClick="{{ prevPage }}" style="background:transparent;border:0;color:var(--color-neutral-400);cursor:pointer;padding:4px;display:flex"><i class="ph ph-caret-up" style="font-size:18px"></i></button>
+              <span style="flex:1;height:2px;background:rgba(233,233,237,.18);border-radius:2px;overflow:hidden;display:block"><span style="display:block;height:100%;width:{{ readPct }};background:var(--color-accent);transition:width .3s"></span></span>
+              <button onClick="{{ nextPage }}" style="background:transparent;border:0;color:var(--color-neutral-400);cursor:pointer;padding:4px;display:flex"><i class="ph ph-caret-down" style="font-size:18px"></i></button>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- FULL SCREEN PANEL VIEWER -->
+        <sc-if value="{{ hasFocus }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;background:#08090f;animation:fadeIn .18s ease;overflow:hidden">
+            <div onClick="{{ focus.tap }}" onDoubleClick="{{ toggleZoom }}" onPointerDown="{{ panDown }}" onPointerMove="{{ panMove }}" onPointerUp="{{ panUp }}" style="position:absolute;inset:0;touch-action:none">
+              <div style="position:absolute;inset:0;transform:{{ zoomTransform }};transition:transform .18s ease-out;animation:panelIn .3s ease">
+                <sc-if value="{{ focus.stacked }}" hint-placeholder-val="{{ true }}">
+                  <span style="position:absolute;inset:0;display:block"><image-slot id="{{ focus.slotA }}" shape="rect" fit="contain" src="{{ focus.srcA }}" placeholder="Panel — image 1"></image-slot></span>
+                </sc-if>
+                <sc-if value="{{ focus.showB }}" hint-placeholder-val="{{ false }}">
+                  <span style="position:absolute;inset:0;display:block;opacity:{{ focus.revealOpacity }};transition:opacity .55s ease"><image-slot id="{{ focus.slotB }}" shape="rect" fit="contain" src="{{ focus.srcB }}" placeholder="Panel — image 2 (on touch)"></image-slot></span>
+                </sc-if>
+                <sc-if value="{{ focus.setup }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;inset:0;display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:4px;padding:96px 10px 200px;box-sizing:border-box">
+                    <span style="position:relative;display:block;min-height:0;border:1px dashed var(--color-neutral-700);border-radius:var(--radius-sm);overflow:hidden">
+                      <image-slot id="{{ focus.slotA }}" shape="rect" fit="contain" src="{{ focus.srcA }}" placeholder="Image 1 — before touch"></image-slot>
+                      <span style="position:absolute;bottom:5px;left:5px;font:500 9.5px var(--font-heading);letter-spacing:.1em;background:rgba(13,14,24,.85);color:var(--color-neutral-300);border-radius:4px;padding:3px 6px;pointer-events:none">1 · BEFORE</span>
+                    </span>
+                    <span style="position:relative;display:block;min-height:0;border:1px dashed var(--color-accent-800);border-radius:var(--radius-sm);overflow:hidden">
+                      <image-slot id="{{ focus.slotB }}" shape="rect" fit="contain" src="{{ focus.srcB }}" placeholder="Image 2 — after touch"></image-slot>
+                      <span style="position:absolute;bottom:5px;left:5px;font:500 9.5px var(--font-heading);letter-spacing:.1em;background:rgba(13,14,24,.85);color:var(--color-accent-300);border-radius:4px;padding:3px 6px;pointer-events:none">2 · AFTER</span>
+                    </span>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+
+            <div style="position:absolute;top:60px;left:14px;right:14px;display:flex;align-items:center;gap:10px">
+              <button onClick="{{ closeFocus }}" style="background:rgba(13,14,24,.7);border:0;border-radius:50%;width:32px;height:32px;color:var(--color-neutral-200);cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-x" style="font-size:17px"></i></button>
+              <div style="flex:1;min-width:0;text-align:center">
+                <div style="font:500 10px var(--font-heading);letter-spacing:.18em;text-transform:uppercase;color:var(--color-accent-300)">{{ focus.label }}</div>
+                <div style="font-size:11px;color:var(--color-neutral-400);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ focus.title }}</div>
+              </div>
+              <button onClick="{{ toggleSound }}" style="background:rgba(13,14,24,.7);border:0;border-radius:50%;width:32px;height:32px;color:{{ soundColor }};cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="{{ soundIcon }}" style="font-size:16px"></i></button>
+            </div>
+
+            <sc-if value="{{ focusZoomVisible }}" hint-placeholder-val="{{ true }}">
+            <div style="position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;padding:6px;border-radius:999px;background:rgba(22,24,38,.72);backdrop-filter:blur(10px);border:1px solid var(--color-divider)">
+              <button onClick="{{ zoomIn }}" style="width:34px;height:34px;border-radius:50%;border:0;background:transparent;color:var(--color-neutral-200);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:color-mix(in srgb,var(--color-accent) 20%,transparent)"><i class="ph ph-magnifying-glass-plus" style="font-size:18px"></i></button>
+              <div style="font:500 9.5px var(--font-heading);color:var(--color-neutral-400);text-align:center">{{ zoomLabel }}</div>
+              <button onClick="{{ zoomOut }}" style="width:34px;height:34px;border-radius:50%;border:0;background:transparent;color:var(--color-neutral-200);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:color-mix(in srgb,var(--color-accent) 20%,transparent)"><i class="ph ph-magnifying-glass-minus" style="font-size:18px"></i></button>
+              <button onClick="{{ zoomReset }}" style="width:34px;height:34px;border-radius:50%;border:0;background:transparent;color:var(--color-neutral-400);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:color-mix(in srgb,var(--color-accent) 20%,transparent)"><i class="ph ph-crop" style="font-size:17px"></i></button>
+            </div>
+            </sc-if>
+
+            <div onDragOver="{{ allowDrop }}" onDrop="{{ focus.onDropAudio }}" style="position:absolute;left:12px;right:12px;bottom:26px;background:rgba(22,24,38,.94);backdrop-filter:blur(14px);border:1px solid var(--color-accent-800);border-radius:var(--radius-md);padding:11px 12px;box-shadow:var(--shadow-lg)">
+              <div style="display:flex;align-items:center;gap:10px">
+                <button onClick="{{ focus.togglePlay }}" style="width:34px;height:34px;flex:none;border-radius:50%;border:1px solid var(--color-accent);background:transparent;color:var(--color-accent);cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:color-mix(in srgb,var(--color-accent) 16%,transparent)"><i class="{{ focus.playIcon }}" style="font-size:14px"></i></button>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12.5px;color:var(--color-neutral-100);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ focus.trackName }}</div>
+                  <div style="font-size:10.5px;color:var(--color-neutral-500);margin-top:2px">{{ focus.trackHint }}</div>
+                </div>
+                <sc-if value="{{ focus.hasTrack }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ focus.clearTrack }}" style="background:transparent;border:0;color:var(--color-neutral-500);cursor:pointer;padding:4px;display:flex"><i class="ph ph-trash" style="font-size:15px"></i></button>
+                </sc-if>
+              </div>
+              <div style="display:flex;align-items:center;gap:9px;margin-top:10px">
+                <i class="ph ph-speaker-low" style="font-size:14px;color:var(--color-neutral-500)"></i>
+                <input type="range" min="0" max="1" step="0.01" value="{{ focus.vol }}" onChange="{{ focus.setVol }}" onInput="{{ focus.setVol }}" style="flex:1;min-width:0"></input>
+                <span style="font:500 10px var(--font-heading);color:var(--color-neutral-400);width:30px;text-align:right">{{ focus.volPct }}</span>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:10px">
+                <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:8px 12px;border-radius:var(--radius-md);border:1px dashed var(--color-neutral-700);color:var(--color-neutral-300);font:500 12px var(--font-heading);cursor:pointer" style-hover="border-color:var(--color-accent);color:var(--color-accent-200)">
+                  <i class="ph ph-music-note-simple" style="font-size:15px"></i>{{ focus.uploadLabel }}
+                  <input type="file" accept="audio/*" onChange="{{ focus.onPickAudio }}" style="display:none"></input>
+                </label>
+                <sc-if value="{{ focus.canReset }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ focus.resetReveal }}" style="flex:none;padding:8px 12px;border-radius:var(--radius-md);border:1px solid var(--color-divider);background:transparent;color:var(--color-neutral-400);font:500 12px var(--font-heading);cursor:pointer">Reset</button>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+      </div>
+    </x-import>
+    <div style="font-size:11px;color:var(--color-neutral-500);max-width:380px;text-align:center;line-height:1.5">{{ navHint }}</div>
+  </div>
+
+  <aside style="width:268px;flex:none;position:sticky;top:40px;display:flex;flex-direction:column;gap:22px">
+    <div>
+      <div style="font:500 10px var(--font-heading);letter-spacing:.2em;text-transform:uppercase;color:var(--color-neutral-500);margin-bottom:9px">Navigation model</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <sc-for list="{{ navOptions }}" as="n" hint-placeholder-count="3">
+          <button onClick="{{ n.pick }}" style="text-align:left;padding:11px 13px;border-radius:var(--radius-md);cursor:pointer;background:{{ n.bg }};border:1px solid {{ n.bc }};color:var(--color-text)">
+            <div style="font:500 13px var(--font-heading);color:{{ n.fg }}">{{ n.label }}</div>
+            <div style="font-size:11.5px;color:var(--color-neutral-500);margin-top:3px;line-height:1.4">{{ n.desc }}</div>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    <div>
+      <div style="font:500 10px var(--font-heading);letter-spacing:.2em;text-transform:uppercase;color:var(--color-neutral-500);margin-bottom:9px">Jump to</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <sc-for list="{{ jumps }}" as="j" hint-placeholder-count="5">
+          <button onClick="{{ j.go }}" style="font:500 11.5px var(--font-heading);padding:6px 11px;border-radius:999px;cursor:pointer;background:{{ j.bg }};border:1px solid {{ j.bc }};color:{{ j.fg }}">{{ j.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div>
+      <div style="font:500 10px var(--font-heading);letter-spacing:.2em;text-transform:uppercase;color:var(--color-neutral-500);margin-bottom:9px">Sensory build</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <sc-for list="{{ notes }}" as="n" hint-placeholder-count="4">
+          <div style="display:flex;gap:9px;align-items:flex-start">
+            <i class="{{ n.icon }}" style="font-size:15px;color:var(--color-accent);margin-top:1px"></i>
+            <div style="font-size:11.5px;color:var(--color-neutral-400);line-height:1.5;text-wrap:pretty">{{ n.text }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </aside>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;navModel&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;tabs&quot;,&quot;sheet&quot;,&quot;gesture&quot;],&quot;default&quot;:&quot;tabs&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Navigation&quot;},&quot;seriesTitle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;DFC Legends&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  state = {
+    screen: 'issue', nav: null, menuOpen: false, cover: true,
+    reader: false, page: 0, focusKey: null,
+    zoom: 1, ox: 0, oy: 0,
+    revealed: {}, tracks: {}, vols: {}, playing: {},
+    loop: null, loopOn: false, loopVol: 0.55,
+    coverTrack: null, coverOn: true, coverVol: 0.6, setup: false, volFor: null,
+    sound: true, product: null, filter: 'All', feed: 'YouTube', cart: 0
+  };
+
+  get nav() { return this.state.nav || this.props.navModel || 'tabs'; }
+
+  go = (s) => this.setState({ screen: s, menuOpen: false, reader: false, cover: false, focusKey: null, product: null });
+  openIssue = () => this.setState({ screen: 'issue', reader: true, cover: false, menuOpen: false, page: 0, focusKey: null });
+  // Reader scroll slots: 5 panel pages plus the hero splash sitting after page 3.
+  PAGES = 5;
+  SPLASH = 3;
+  SLOTS = 6;
+  slotToPage = (n) => n === this.SPLASH ? -1 : (n < this.SPLASH ? n : n - 1);
+  pageToSlot = (p) => (p < this.SPLASH ? p : p + 1);
+
+  openPage = (i) => { const n = this.pageToSlot(i); this._scrollTo = n; this.setState({ reader: true, cover: false, menuOpen: false, page: n, focusKey: null }); };
+
+  setScroller = (el) => { this._scroller = el; };
+  setPageRef = (i) => (el) => { (this._pageEls = this._pageEls || {})[i] = el; };
+
+  scrollPending = () => {
+    if (this._scrollTo == null) return;
+    const el = this._pageEls && this._pageEls[this._scrollTo], sc = this._scroller;
+    if (el && sc) {
+      sc.scrollTop += el.getBoundingClientRect().top - sc.getBoundingClientRect().top;
+      this._scrollTo = null;
+    }
+  };
+
+  onReaderScroll = (e) => {
+    const sc = e.target, els = this._pageEls || {}, mid = sc.scrollTop + sc.clientHeight / 2;
+    const base = els[0] ? els[0].offsetTop : 0;
+    let best = 0;
+    for (let i = 0; i < this.SLOTS; i++) {
+      const el = els[i];
+      if (!el) continue;
+      const top = el.offsetTop - base;
+      if (top <= mid && mid < top + el.offsetHeight) { best = i; break; }
+      if (top <= mid) best = i;
+    }
+    if (best !== this.state.page) this.setState({ page: best });
+  };
+  openFocus = (key) => this.setState({ focusKey: key, zoom: 1, ox: 0, oy: 0 });
+  closeFocus = () => this.setState({ focusKey: null, zoom: 1, ox: 0, oy: 0 });
+
+  componentDidMount() {
+    this._loopEl = new Audio();
+    this._loopEl.loop = true;
+    this._coverEl = new Audio();
+    this._coverEl.loop = true;
+    const mark = (el, key) => {
+      ['play', 'playing', 'pause', 'ended', 'stalled'].forEach(ev =>
+        el.addEventListener(ev, () => this.setState({ [key]: !el.paused })));
+    };
+    mark(this._loopEl, 'loopPlaying');
+    mark(this._coverEl, 'coverPlaying');
+    this._pool = {};
+    this._mo = new MutationObserver(() => {
+      clearTimeout(this._moT);
+      this._moT = setTimeout(() => this.forceUpdate(), 80);
+    });
+    this._mo.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['data-filled'] });
+    window.__dfc = this;
+    this.seedAudio();
+    this.restoreVols();
+    this.restoreAudio();
+    // Autoplay policy: a play() outside a user gesture is rejected and never retried,
+    // which leaves the loops silent for the whole session. Re-attempt on every gesture.
+    document.addEventListener('pointerdown', this.kick, true);
+    document.addEventListener('keydown', this.kick, true);
+  }
+
+  // First real gesture: start whatever loop belongs to the screen you're on,
+  // unless you deliberately paused it. Autoplay is blocked before this point.
+  kick = () => {
+    const s = this.state, want = {};
+    if (s.loop && !s.loopOff && !s.loopOn && (s.reader || s.focusKey || s.screen === 'issue') && !s.cover) want.loopOn = true;
+    if (s.coverTrack && !s.coverOff && !s.coverOn && s.cover && !s.reader && !s.focusKey) want.coverOn = true;
+    if (Object.keys(want).length) this.setState(want, this.sync);
+    else this.sync();
+  };
+
+  // Debug handle: window.__dfc.state / .audioReport() to inspect audio wiring.
+  audioReport = () => {
+    const s = this.state, r = (a) => a ? { src: (a.src || '').slice(0, 24), paused: a.paused, muted: a.muted, vol: a.volume, err: a.error && a.error.code, ready: a.readyState } : null;
+    return { cover: !!s.coverTrack, coverOn: s.coverOn, onCover: s.cover, loop: !!s.loop, loopOn: s.loopOn, sound: s.sound, coverEl: r(this._coverEl), loopEl: r(this._loopEl), tracks: Object.keys(s.tracks || {}) };
+  };
+
+  // Audio shipped with the project. Files, not browser storage, so the app sounds
+  // the same for anyone who opens it — a local drop still overrides its slot.
+  seedAudio = () => {
+    const jb = [
+      ['jb0', 'The Arsenal', 'jb0_the_arsenal.mp3'],
+      ['jb1', 'Art Keeps Me Sane', 'jb1_art_keeps_me_sane.mp3'],
+      ['jb2', 'B_Harlem', 'jb2_bharlem.mp3'],
+      ['jb3', 'Self-Aware (Fragmented Inst Mix)', 'jb3_self_aware_fragmented.mp3'],
+      ['jb4', 'The Voyager (RMX)', 'jb4_the_voyager_rmx.mp3'],
+      ['jb5', 'Cathedral (Extended)', 'jb5_cathedral_extended.mp3'],
+      ['jb6', 'Shut Down (Sparse Inst Mix)', 'jb6_shut_down_sparse.mp3']
+    ];
+    const vo = [
+      ['p0-0', 'VO 01', 'vo_01.mp3'],
+      ['p0-2', 'VO 02', 'vo_02.mp3'],
+      ['p2-3', 'VO 03', 'vo_03.mp3'],
+      ['p3-0', 'VO 04', 'vo_04.mp3']
+    ];
+    const tracks = {};
+    jb.concat(vo).forEach(([k, name, file]) => { tracks[k] = { name, url: 'audio/' + file }; });
+    this.setState(s => ({
+      tracks: Object.assign(tracks, s.tracks),
+      loop: s.loop || { name: 'Glider', url: 'audio/chapter_loop.mp3' },
+      coverTrack: s.coverTrack || { name: 'Voyager', url: 'audio/cover_theme.mp3' }
+    }));
+  };
+
+  db = () => new Promise((res, rej) => {
+    if (this._dbc) return res(this._dbc);
+    const r = indexedDB.open('dfc-bz-audio', 1);
+    r.onupgradeneeded = () => { if (!r.result.objectStoreNames.contains('audio')) r.result.createObjectStore('audio'); };
+    r.onsuccess = () => { this._dbc = r.result; res(r.result); };
+    r.onerror = () => rej(r.error);
+  });
+
+  putAudio = (key, file) => {
+    this.db().then(db => db.transaction('audio', 'readwrite').objectStore('audio').put({ name: file.name, blob: file }, key)).catch(() => {});
+  };
+  delAudio = (key) => {
+    this.db().then(db => db.transaction('audio', 'readwrite').objectStore('audio').delete(key)).catch(() => {});
+  };
+
+  restoreAudio = () => {
+    this.db().then(db => {
+      const tx = db.transaction('audio', 'readonly'), st = tx.objectStore('audio');
+      const kr = st.getAllKeys(), vr = st.getAll();
+      tx.oncomplete = () => {
+        const keys = kr.result || [], vals = vr.result || [], tracks = {};
+        let loop = null, cover = null;
+        keys.forEach((k, i) => {
+          const v = vals[i];
+          if (!v || !v.blob) return;
+          const t = { name: v.name, url: URL.createObjectURL(v.blob) };
+          if (k === '__loop') loop = t; else if (k === '__cover') cover = t; else tracks[k] = t;
+        });
+        // Restore paused: the browser rejects a play() with no user gesture, and a
+        // "playing" flag that isn't true makes the first tap read as a pause.
+        this.setState(s => ({
+          tracks: Object.assign({}, s.tracks, tracks),
+          loop: loop || s.loop, coverTrack: cover || s.coverTrack,
+          loopOn: false, coverOn: false
+        }));
+      };
+    }).catch(() => {});
+  };
+
+  restoreVols = () => {
+    try {
+      const raw = localStorage.getItem('dfc-bz-vols');
+      if (!raw) return;
+      const v = JSON.parse(raw) || {};
+      this.setState({
+        vols: v.vols || {},
+        loopVol: v.loopVol === undefined ? this.state.loopVol : v.loopVol,
+        coverVol: v.coverVol === undefined ? this.state.coverVol : v.coverVol
+      });
+    } catch (e) {}
+  };
+  saveVols = (patch) => {
+    try {
+      const s = this.state;
+      localStorage.setItem('dfc-bz-vols', JSON.stringify(Object.assign({ vols: s.vols, loopVol: s.loopVol, coverVol: s.coverVol }, patch || {})));
+    } catch (e) {}
+  };
+
+  filled = (id) => {
+    const el = id && document.getElementById(id);
+    return !!el && el.hasAttribute('data-filled');
+  };
+  componentDidUpdate() { this.sync(); this.scrollPending(); }
+  componentWillUnmount() {
+    document.removeEventListener('pointerdown', this.kick, true);
+    document.removeEventListener('keydown', this.kick, true);
+    if (this._loopEl) this._loopEl.pause();
+    if (this._coverEl) this._coverEl.pause();
+    if (this._mo) this._mo.disconnect();
+    Object.values(this._pool || {}).forEach(a => a.pause());
+  }
+
+  sync = () => {
+    const s = this.state, a = this._loopEl;
+    if (a) {
+      a.muted = !s.sound;
+      a.volume = s.loopVol;
+      const want = s.loop && s.loopOn && (s.reader || s.focusKey || s.screen === 'issue') && !s.cover;
+      if (want) { if (a.src !== s.loop.url) a.src = s.loop.url; if (a.paused) a.play().catch(() => {}); }
+      else if (!a.paused) a.pause();
+    }
+    const c = this._coverEl;
+    if (c) {
+      c.muted = !s.sound;
+      c.volume = s.coverVol;
+      const wantC = s.coverTrack && s.coverOn && s.cover && !s.reader && !s.focusKey;
+      if (wantC) { if (c.src !== s.coverTrack.url) c.src = s.coverTrack.url; if (c.paused) c.play().catch(() => {}); }
+      else if (!c.paused) c.pause();
+    }
+    Object.keys(this._pool || {}).forEach(k => {
+      const el = this._pool[k];
+      el.muted = !s.sound;
+      el.volume = s.vols[k] === undefined ? 0.85 : s.vols[k];
+    });
+  };
+
+  el = (key) => {
+    const t = this.state.tracks[key];
+    if (!t) return null;
+    let a = this._pool[key];
+    if (!a) { a = new Audio(); a.loop = false; this._pool[key] = a; a.addEventListener('ended', () => this.setState(s => ({ playing: Object.assign({}, s.playing, { [key]: false }) }))); }
+    if (a.src !== t.url) a.src = t.url;
+    return a;
+  };
+
+  fire = (key) => {
+    const a = this.el(key);
+    if (!a) return false;
+    a.muted = !this.state.sound;
+    a.volume = this.state.vols[key] === undefined ? 0.85 : this.state.vols[key];
+    try { a.currentTime = 0; } catch (e) {}
+    a.play().catch(() => {});
+    return true;
+  };
+
+  touchPanel = (key, slotB) => {
+    if (this._drag) { this._drag = false; return; }
+    const played = this.fire(key);
+    const el = slotB && document.getElementById(slotB);
+    const empty = !!el && !el.hasAttribute('data-filled');
+    clearTimeout(this._toastT);
+    if (empty) {
+      this.setState(s => ({
+        playing: Object.assign({}, s.playing, { [key]: played }),
+        toast: 'Nothing to reveal — image 2 is empty for this panel. Turn on Fill mode to add it.'
+      }));
+      this._toastT = setTimeout(() => this.setState({ toast: null }), 4200);
+      return;
+    }
+    this.setState(s => ({
+      revealed: Object.assign({}, s.revealed, { [key]: true }),
+      playing: Object.assign({}, s.playing, { [key]: played }),
+      toast: null
+    }));
+  };
+
+  togglePanelAudio = (key) => {
+    const a = this.el(key);
+    if (!a) return;
+    if (a.paused) { a.play().catch(() => {}); this.setState(s => ({ playing: Object.assign({}, s.playing, { [key]: true }) })); }
+    else { a.pause(); this.setState(s => ({ playing: Object.assign({}, s.playing, { [key]: false }) })); }
+  };
+
+  addTrack = (key, file) => {
+    if (!file || !/audio|mp3|mpeg|wav|ogg/i.test(file.type + file.name)) return;
+    const url = URL.createObjectURL(file);
+    if (this._pool[key]) { this._pool[key].pause(); delete this._pool[key]; }
+    this.putAudio(key, file);
+    this.setState(s => ({ tracks: Object.assign({}, s.tracks, { [key]: { name: file.name, url } }) }));
+  };
+  clearTrack = (key) => {
+    this.delAudio(key);
+    if (this._pool[key]) { this._pool[key].pause(); delete this._pool[key]; }
+    this.setState(s => {
+      const t = Object.assign({}, s.tracks); delete t[key];
+      return { tracks: t, playing: Object.assign({}, s.playing, { [key]: false }) };
+    });
+  };
+  setVol = (key, v) => {
+    if (this._pool[key]) this._pool[key].volume = v;
+    this.setState(s => ({ vols: Object.assign({}, s.vols, { [key]: v }) }), () => this.saveVols());
+  };
+
+  stopTrack = (key) => {
+    const a = this._pool[key];
+    if (a) { a.pause(); try { a.currentTime = 0; } catch (e) {} }
+    this.setState(s => ({ playing: Object.assign({}, s.playing, { [key]: false }) }));
+  };
+
+  addCoverTrack = (file) => {
+    if (!file || !/audio|mp3|mpeg|wav|ogg/i.test(file.type + file.name)) return;
+    this.putAudio('__cover', file);
+    this.setState({ coverTrack: { name: file.name, url: URL.createObjectURL(file) }, coverOn: true });
+  };
+
+  addLoop = (file) => {
+    if (!file || !/audio|mp3|mpeg|wav|ogg/i.test(file.type + file.name)) return;
+    this.putAudio('__loop', file);
+    this.setState({ loop: { name: file.name, url: URL.createObjectURL(file) }, loopOn: true });
+  };
+  allowDrop = (e) => { e.preventDefault(); e.stopPropagation(); };
+
+  panDown = (e) => {
+    if (this.state.zoom === 1) return;
+    this._p = { x: e.clientX, y: e.clientY, ox: this.state.ox, oy: this.state.oy, moved: false };
+    e.currentTarget.setPointerCapture && e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  panMove = (e) => {
+    if (!this._p) return;
+    const dx = e.clientX - this._p.x, dy = e.clientY - this._p.y;
+    if (Math.abs(dx) + Math.abs(dy) > 4) this._p.moved = true;
+    const lim = 170 * this.state.zoom, cl = (v) => Math.max(-lim, Math.min(lim, v));
+    this.setState({ ox: cl(this._p.ox + dx), oy: cl(this._p.oy + dy) });
+  };
+  panUp = () => { const m = !!(this._p && this._p.moved); this._p = null; this._drag = m; if (m) setTimeout(() => { this._drag = false; }, 120); };
+
+  onDown = (e) => { this._x = e.clientX; this._y = e.clientY; };
+  onUp = (e) => {
+    const s = this.state;
+    if (this.nav !== 'gesture' || s.reader || s.focusKey || this._x == null) return;
+    const dx = e.clientX - this._x, dy = e.clientY - this._y;
+    if (Math.abs(dx) < 45 || Math.abs(dy) > Math.abs(dx)) return;
+    const order = ['issue', 'bonus', 'jukebox', 'community', 'store'];
+    let i = order.indexOf(s.screen) + (dx < 0 ? 1 : -1);
+    i = Math.max(0, Math.min(order.length - 1, i));
+    this.setState({ screen: order[i], product: null });
+  };
+
+  renderVals() {
+    const s = this.state, nav = this.nav;
+    const acc = 'var(--color-accent)', dim = 'var(--color-neutral-500)';
+    const order = ['issue', 'bonus', 'jukebox', 'community', 'store'];
+    const labels = { issue: 'Issue Zero', bonus: 'Bonus features', jukebox: 'Jukebox', community: 'Community', store: 'Store' };
+    const shorts = { issue: 'Issue', bonus: 'Bonus', jukebox: 'Jukebox', community: 'Group', store: 'Store' };
+
+    const pageTitles = [
+      'Before the Force', 'Yard Kings', 'First Contact', 'The Can Rattle',
+      'Blackbook Nights'
+    ];
+    const PAGES = pageTitles.length;
+    const pk = (pi, j) => 'p' + pi + '-' + j;
+    const reg = {};
+    pageTitles.forEach((t, pi) => {
+      for (let j = 0; j < 4; j++) {
+        reg[pk(pi, j)] = {
+          slotA: 'bz-p' + pi + '-' + j + 'a', slotB: 'bz-p' + pi + '-' + j + 'b',
+          label: 'Page ' + (pi + 1) + ' · Panel ' + (j + 1), title: t, dual: true
+        };
+      }
+    });
+
+    const bonusData = [
+      ['DFC Legends graffiti showcase', 'Six pieces from the yard walls — cover page.', 'Bonus cover'],
+      ['Wildstyle — Def Force burner', 'Yard wall, twelve cans, one night.', 'Piece 01'],
+      ['Throw-up study — the crew tag', 'Two-tone fill, chrome outline.', 'Piece 02'],
+      ['Nine Lamps, full wall', 'The lamp row painted at 1:1 scale.', 'Piece 03'],
+      ['Character work — the writer', 'Blackbook sketch to finished wall.', 'Piece 04'],
+      ['Letterform blackbook', 'Twenty pages of unused alphabets.', 'Piece 05'],
+      ['The Vigil mural', 'Forty feet, commissioned, still standing.', 'Piece 06']
+    ];
+    bonusData.forEach((b, i) => {
+      reg['b' + i] = { slotA: 'bz-bonus-' + i, slotB: 'bz-bonus-' + i + 'b', label: b[2], title: b[0], dual: false };
+    });
+
+    // Animated art: dropping a GIF flattens it to a still, so animated files live in
+    // the project and are referenced here by slot id. Key = slot id, value = filename.
+    const art = {};
+
+    const vol = (k) => s.vols[k] === undefined ? 0.85 : s.vols[k];
+
+    const slot = Math.max(0, Math.min(this.SLOTS - 1, s.page));
+    const cur = this.slotToPage(slot), onSplash = cur === -1;
+    const pi = onSplash ? 2 : cur;
+    const panelFor = (pgi, j) => {
+      const k = pk(pgi, j), info = reg[k], on = !!s.revealed[k], has = !!s.tracks[k];
+      return {
+        key: k, slotA: info.slotA, slotB: info.slotB, label: 'P' + (j + 1),
+        srcA: art[info.slotA] || '', srcB: art[info.slotB] || '',
+        setup: s.setup, stacked: !s.setup, showVol: !s.setup,
+        revealOpacity: on ? 1 : 0,
+        untouched: !on && !s.setup && this.filled(info.slotA),
+        border: on ? 'var(--color-accent-700)' : 'var(--color-divider)',
+        labelColor: on ? 'var(--color-accent-300)' : 'var(--color-neutral-400)',
+        audioIcon: has ? (s.playing[k] ? 'ph-fill ph-speaker-high' : 'ph ph-speaker-high') : 'ph ph-music-notes-plus',
+        audioColor: has ? acc : 'var(--color-neutral-600)',
+        vol: vol(k),
+        setVol: (e) => this.setVol(k, parseFloat(e.target.value)),
+        volOpen: s.volFor === k,
+        volOpacity: s.volFor === k ? 1 : (has ? 0.5 : 0.28),
+        toggleVol: (e) => { e.stopPropagation(); this.setState({ volFor: s.volFor === k ? null : k }); },
+        tap: () => this.touchPanel(k, info.slotB),
+        expand: (e) => { e.stopPropagation(); this.openFocus(k); }
+      };
+    };
+    const panels = [0, 1, 2, 3].map(j => panelFor(pi, j));
+    const readerPages = [];
+    for (let n = 0; n < this.SLOTS; n++) {
+      const p = this.slotToPage(n);
+      if (p === -1) {
+        readerPages.push({
+          isSplash: true, isPanels: false, ref: this.setPageRef(n), panels: [],
+          no: '3a · Interlude', touched: '', title: 'Hero introduction',
+          titleColor: slot === n ? 'var(--color-accent-300)' : 'var(--color-neutral-400)'
+        });
+      } else {
+        readerPages.push({
+          isSplash: false, isPanels: true, title: pageTitles[p], ref: this.setPageRef(n),
+          no: (p + 1 < 10 ? '0' : '') + (p + 1) + ' · ' + pageTitles[p],
+          panels: [0, 1, 2, 3].map(j => panelFor(p, j)),
+          touched: [0, 1, 2, 3].filter(j => s.revealed[pk(p, j)]).length + ' / 4 awakened',
+          titleColor: slot === n ? 'var(--color-accent-300)' : 'var(--color-neutral-400)'
+        });
+      }
+    }
+    const pageTouched = [0, 1, 2, 3].filter(j => s.revealed[pk(pi, j)]).length;
+    const touchedCount = Object.keys(s.revealed).filter(k => k.charAt(0) === 'p' && s.revealed[k]).length;
+
+    const pageCards = pageTitles.map((t, i) => ({
+      title: t, badge: 'Page ' + (i + 1), open: () => this.openPage(i),
+      meta: [0, 1, 2, 3].filter(j => s.revealed[pk(i, j)]).length + ' / 4 awakened',
+      badgeColor: i === pi && s.reader ? 'var(--color-accent-300)' : 'var(--color-neutral-300)',
+      thumbs: [0, 1, 2, 3].map(j => ({ slot: reg[pk(i, j)].slotA }))
+    }));
+
+    const bonusGrid = bonusData.slice(1).map((b, i) => ({
+      title: b[0], caption: b[1], badge: b[2], slot: 'bz-bonus-' + (i + 1),
+      open: () => this.openFocus('b' + (i + 1))
+    }));
+
+    const fk = s.focusKey, fi = fk ? reg[fk] : null;
+    const ft = fk ? s.tracks[fk] : null;
+    const focus = fi ? {
+      slotA: fi.slotA, slotB: fi.slotB,
+      srcA: art[fi.slotA] || '', srcB: art[fi.slotB] || '',
+      label: fi.label, title: fi.title,
+      showB: fi.dual && !s.setup, setup: fi.dual && s.setup, stacked: !(fi.dual && s.setup),
+      revealOpacity: s.revealed[fk] ? 1 : 0,
+      tap: () => fi.dual ? this.touchPanel(fk, fi.slotB) : this.fire(fk),
+      hasTrack: !!ft, vol: vol(fk), volPct: Math.round(vol(fk) * 100) + '%',
+      setVol: (e) => this.setVol(fk, parseFloat(e.target.value)),
+      trackName: ft ? ft.name : 'No sound on this panel yet',
+      trackHint: ft ? (s.playing[fk] ? 'Plays once on touch · not looped' : 'Ready — plays once on touch') : 'Drop an MP3 here, or choose a file',
+      playIcon: s.playing[fk] ? 'ph-fill ph-pause' : 'ph-fill ph-play',
+      togglePlay: () => this.togglePanelAudio(fk),
+      clearTrack: () => this.clearTrack(fk),
+      onPickAudio: (e) => this.addTrack(fk, e.target.files && e.target.files[0]),
+      onDropAudio: (e) => { e.preventDefault(); e.stopPropagation(); this.addTrack(fk, e.dataTransfer.files && e.dataTransfer.files[0]); },
+      uploadLabel: 'MP3 for ' + fi.label,
+      canReset: fi.dual && !!s.revealed[fk],
+      resetReveal: () => this.setState(st => { const r = Object.assign({}, st.revealed); delete r[fk]; return { revealed: r }; })
+    } : null;
+
+    const all = [
+      ['Book Zero — Print Zine', '$18.00', 'Print', 'Print', '20 pages, risograph cover, numbered edition of 500.'],
+      ['Book One Pre-Order', '$44.00', 'Print', 'Print', 'Reserve the first full book. Ships with a Book Zero panel print.'],
+      ['Issue Zero Score', '$7.00', 'Digital', 'Digital', 'Every panel cue and the chapter loop, mastered.'],
+      ['Crew Pin — Def Force', '$14.00', 'Apparel', 'Goods', 'Hard enamel on a printed backing card.'],
+      ['Prelude Tee — Black', '$32.00', 'Apparel', 'Apparel', 'Heavyweight cotton, front crew mark, back panel grid.'],
+      ['Panel Print — Page 5', '$26.00', 'Print', 'Print', 'A3 giclée of the last panel. Signed.']
+    ].map((p, i) => ({
+      name: p[0], price: p[1], cat: p[2], kind: p[3], blurb: p[4], slot: 'bz-prod-' + i,
+      open: () => this.setState({ product: i })
+    }));
+    const products = s.filter === 'All' ? all : all.filter(p => p.cat === s.filter);
+
+    const chip = (on) => ({
+      bg: on ? 'color-mix(in srgb,var(--color-accent) 16%,transparent)' : 'transparent',
+      bc: on ? acc : 'var(--color-divider)', fg: on ? 'var(--color-accent-200)' : 'var(--color-neutral-400)'
+    });
+    const filters = ['All', 'Print', 'Digital', 'Apparel'].map(f =>
+      Object.assign({ label: f, pick: () => this.setState({ filter: f }) }, chip(s.filter === f)));
+
+    const feeds = ['YouTube', 'Instagram', 'Group'].map(f => ({
+      label: f, pick: () => this.setState({ feed: f }),
+      bg: s.feed === f ? 'color-mix(in srgb,var(--color-accent) 18%,transparent)' : 'transparent',
+      fg: s.feed === f ? 'var(--color-accent-200)' : dim
+    }));
+    const feedData = {
+      YouTube: [
+        ['Book Zero, panel by panel — the sound design', '14:22 · 9.1k views · 2 days ago'],
+        ['How a touch triggers the second image', '7:48 · 5.4k views · 1 week ago'],
+        ['Yard walls to page: building the prelude', '22:10 · 18k views · 3 weeks ago']
+      ],
+      Instagram: [
+        ['Panel 4 · page 5 — the reveal frame', '1,880 likes · 3h'],
+        ['Cans, tape, and a phone on a tripod', '742 likes · 1d'],
+        ['Cover pass six of nine', '2,104 likes · 5d']
+      ],
+      Group: [
+        ['Which panel hit hardest on first touch?', '64 replies · pinned'],
+        ['Score thread — post your loop pairings', '31 replies · 6h'],
+        ['Zine swap for the print run', '12 replies · 2d']
+      ]
+    };
+    const isIg = s.feed === 'Instagram';
+    const feedItems = feedData[s.feed].map((f, i) => ({
+      title: f[0], meta: f[1], slot: 'bz-feed-' + s.feed + '-' + i,
+      thumbW: isIg ? '72px' : '104px', thumbH: '72px'
+    }));
+
+    const jukebox = [
+      'Prelude — Yard Static', 'Can Rattle (Interlude)', 'Buff Wars', 'Blackbook Nights',
+      'All-City Anthem', 'The Lamp Row', 'What Is Coming (Outro)'
+    ].map((nm, i) => {
+      const k = 'jb' + i, t = s.tracks[k], on = !!s.playing[k];
+      return {
+        slot: 'bz-jb-art-' + i, no: (i + 1 < 10 ? '0' : '') + (i + 1),
+        title: t ? t.name : nm,
+        hint: t ? (on ? 'Playing' : 'Ready') : 'Empty slot — add an MP3',
+        titleColor: t ? 'var(--color-neutral-100)' : 'var(--color-neutral-500)',
+        border: on ? 'var(--color-accent-700)' : 'var(--color-divider)',
+        playIcon: on ? 'ph-fill ph-pause' : 'ph-fill ph-play',
+        playColor: t ? acc : 'var(--color-neutral-700)',
+        stopColor: on ? 'var(--color-neutral-200)' : 'var(--color-neutral-700)',
+        vol: vol(k),
+        setVol: (e) => this.setVol(k, parseFloat(e.target.value)),
+        play: () => this.togglePanelAudio(k),
+        stop: () => this.stopTrack(k),
+        onPick: (e) => this.addTrack(k, e.target.files && e.target.files[0]),
+        onDrop: (e) => { e.preventDefault(); e.stopPropagation(); this.addTrack(k, e.dataTransfer.files && e.dataTransfer.files[0]); }
+      };
+    });
+    const jukeboxCount = jukebox.filter((j, i) => s.tracks['jb' + i]).length;
+
+    const socials = [
+      { label: 'YouTube', icon: 'ph ph-youtube-logo' },
+      { label: 'Instagram', icon: 'ph ph-instagram-logo' },
+      { label: 'Facebook', icon: 'ph ph-facebook-logo' }
+    ];
+
+    const tabIcons = { issue: 'book-open', bonus: 'spray-bottle', jukebox: 'vinyl-record', community: 'users-three', store: 'storefront' };
+    const tabs = order.map(k => ({
+      label: labels[k], short: shorts[k], go: () => this.go(k),
+      hint: k === 'issue' ? PAGES + ' pages' : k === 'bonus' ? '6 pages' : k === 'jukebox' ? '7 tracks' : k === 'store' ? s.cart + ' in bag' : 'Follow',
+      icon: (s.screen === k ? 'ph-fill ph-' : 'ph ph-') + tabIcons[k],
+      color: s.screen === k ? acc : dim
+    }));
+    const dots = order.map(k => ({ w: s.screen === k ? '18px' : '4px', bg: s.screen === k ? acc : 'var(--color-neutral-700)' }));
+
+    const navOptions = [
+      ['tabs', 'Tab bar', 'Five destinations, always visible. Familiar, but eats 84px of a page you want full-bleed.'],
+      ['sheet', 'Floating pill + sheet', 'One button, art stays edge to edge. Tap it for the full menu.'],
+      ['gesture', 'Swipe between screens', 'No chrome at all. Swipe left/right; a dot rail shows where you are.']
+    ].map(n => ({
+      label: n[1], desc: n[2], pick: () => this.setState({ nav: n[0], menuOpen: false }),
+      bg: nav === n[0] ? 'color-mix(in srgb,var(--color-accent) 12%,transparent)' : 'var(--color-surface)',
+      bc: nav === n[0] ? acc : 'var(--color-divider)',
+      fg: nav === n[0] ? 'var(--color-accent-200)' : 'var(--color-text)'
+    }));
+
+    const over = s.reader || s.cover || !!fk;
+    const jumps = [Object.assign({ label: 'Cover', go: () => this.setState({ cover: true, reader: false, focusKey: null }) }, chip(s.cover))]
+      .concat(order.map(k => Object.assign({ label: labels[k], go: () => this.go(k) }, chip(s.screen === k && !over))))
+      .concat([Object.assign({ label: 'Open page 1', go: () => this.openIssue() }, chip(s.reader))]);
+
+    const notes = [
+      { icon: 'ph ph-hand-tap', text: 'Touch any panel: its cue fires once and the second image fades in and stays.' },
+      { icon: 'ph ph-music-notes', text: 'One looping MP3 scores the whole chapter; every panel carries its own one-shot.' },
+      { icon: 'ph ph-sliders-horizontal', text: 'Per-panel volume in the grid and in full screen — mix for clarity, not loudness.' },
+      { icon: 'ph ph-arrows-out', text: 'Expand any panel for full-screen zoom to 4× with drag to pan.' }
+    ];
+
+    const hints = {
+      tabs: 'Tab bar: five destinations — Issue Zero, Bonus, Jukebox, Community, Store.',
+      sheet: 'Tap the pill to open the menu — the page keeps its full height.',
+      gesture: 'Swipe left or right across the screen to change section.'
+    };
+
+    return {
+      seriesTitle: this.props.seriesTitle ?? 'DFC Legends',
+      isCover: s.cover && !s.reader && !fk,
+      isReader: s.reader && !fk,
+      hasFocus: !!fk, focus: focus || {},
+      focusZoomVisible: !!fk && !(fi && fi.dual && s.setup),
+      chromeVisible: !over,
+      isIssue: s.screen === 'issue' && !over, isBonus: s.screen === 'bonus' && !over,
+      isCommunity: s.screen === 'community' && !over, isStore: s.screen === 'store' && !over,
+      isJukebox: s.screen === 'jukebox' && !over, jukebox, jukeboxCount,
+      hasCoverTrack: !!s.coverTrack, coverVol: s.coverVol,
+      coverTrackName: s.coverTrack ? s.coverTrack.name : 'Add a looping theme',
+      coverPlayIcon: s.coverPlaying ? 'ph-fill ph-pause' : 'ph-fill ph-play',
+      coverAudioColor: s.coverPlaying ? acc : 'var(--color-neutral-300)',
+      toggleCoverAudio: () => this.setState({ coverOn: !s.coverPlaying, coverOff: !!s.coverPlaying }),
+      setCoverVol: (e) => { const v = parseFloat(e.target.value); this.setState({ coverVol: v }, () => this.saveVols()); },
+      onPickCover: (e) => this.addCoverTrack(e.target.files && e.target.files[0]),
+      onDropCover: (e) => { e.preventDefault(); e.stopPropagation(); this.addCoverTrack(e.dataTransfer.files && e.dataTransfer.files[0]); },
+      clearCoverTrack: () => { this.delAudio('__cover'); if (this._coverEl) this._coverEl.pause(); this.setState({ coverTrack: null, coverOn: false }); },
+      enterApp: () => this.setState({ cover: false, screen: 'issue', reader: false, focusKey: null }),
+      openIssue: this.openIssue, openBonusCover: () => this.openFocus('b0'),
+      closeReader: () => this.setState({ reader: false }),
+      closeFocus: this.closeFocus,
+      readerTitle: onSplash ? 'Issue Zero · Hero introduction' : 'Issue Zero · ' + pageTitles[pi],
+      pageStatus: onSplash ? 'Page 3a · splash' : 'Page ' + (pi + 1) + ' / ' + PAGES + ' · ' + pageTouched + ' of 4 awakened',
+      pageNo: pi + 1, pageCount: PAGES, pageTouched, touchedCount,
+      readPct: Math.round((pi + 1) / PAGES * 100) + '%',
+      panels, readerPages, pageCards, bonusGrid, panelTotal: PAGES * 4,
+      setupOn: s.setup, toast: s.toast, hasToast: !!s.toast,
+      clearToast: () => this.setState({ toast: null }),
+      resetPage: () => this.setState(st => {
+        const r = Object.assign({}, st.revealed);
+        [0, 1, 2, 3].forEach(j => delete r[pk(pi, j)]);
+        return { revealed: r, setup: false, toast: null };
+      }),
+      resetAll: () => this.setState({ revealed: {}, setup: false, toast: null }),
+      setupIcon: s.setup ? 'ph-fill ph-images-square' : 'ph ph-images-square',
+      setupColor: s.setup ? acc : 'var(--color-neutral-400)',
+      toggleSetup: () => this.setState({ setup: !s.setup }),
+      setScroller: this.setScroller, onReaderScroll: this.onReaderScroll,
+      prevPage: () => this.openPage(pi === 0 ? 7 : pi - 1),
+      nextPage: () => this.openPage((pi + 1) % 8),
+      zoomTransform: 'scale(' + s.zoom + ') translate(' + (s.ox / s.zoom) + 'px,' + (s.oy / s.zoom) + 'px)',
+      zoomLabel: (s.zoom === 1 ? '1' : s.zoom.toFixed(1)) + '×',
+      zoomIn: () => this.setState({ zoom: Math.min(4, Math.round((s.zoom + 0.5) * 10) / 10) }),
+      zoomOut: () => { const z = Math.max(1, Math.round((s.zoom - 0.5) * 10) / 10); this.setState({ zoom: z, ox: z === 1 ? 0 : s.ox, oy: z === 1 ? 0 : s.oy }); },
+      zoomReset: () => this.setState({ zoom: 1, ox: 0, oy: 0 }),
+      toggleZoom: () => s.zoom > 1 ? this.setState({ zoom: 1, ox: 0, oy: 0 }) : this.setState({ zoom: 2.5 }),
+      panDown: this.panDown, panMove: this.panMove, panUp: this.panUp, allowDrop: this.allowDrop,
+      hasLoop: !!s.loop, loopVol: s.loopVol,
+      loopName: s.loop ? s.loop.name : 'No chapter loop yet',
+      loopHint: s.loop ? (s.loopPlaying ? 'Looping through Issue Zero' : 'Paused — tap play') : 'Drop an MP3 here, or choose a file — it loops',
+      loopIcon: s.loopPlaying ? 'ph-fill ph-pause' : 'ph-fill ph-play',
+      loopColor: s.loopPlaying ? acc : 'var(--color-neutral-400)',
+      toggleLoop: () => this.setState({ loopOn: !s.loopPlaying, loopOff: !!s.loopPlaying }),
+      setLoopVol: (e) => { const v = parseFloat(e.target.value); this.setState({ loopVol: v }, () => this.saveVols()); },
+      clearLoop: () => { this.delAudio('__loop'); if (this._loopEl) this._loopEl.pause(); this.setState({ loop: null, loopOn: false }); },
+      onPickLoop: (e) => this.addLoop(e.target.files && e.target.files[0]),
+      onDropLoop: (e) => { e.preventDefault(); e.stopPropagation(); this.addLoop(e.dataTransfer.files && e.dataTransfer.files[0]); },
+      toggleSound: () => this.setState({ sound: !s.sound }),
+      soundIcon: s.sound ? 'ph ph-speaker-high' : 'ph ph-speaker-slash',
+      soundColor: s.sound ? acc : dim,
+      navTabs: nav === 'tabs' && !over, navSheet: nav === 'sheet' && !over, navGesture: nav === 'gesture' && !over,
+      // Reachable from the reader too — the panel viewer is the only place it stays out.
+      menuOpen: s.menuOpen && !fk, toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
+      screenLabel: labels[s.screen], navHint: hints[nav],
+      tabs, dots, navOptions, jumps, notes, socials, feeds, feedItems, filters, products,
+      cartCount: s.cart, hasProduct: s.product !== null, product: all[s.product] || all[0],
+      cartCta: 'Add to bag · ' + (all[s.product] || all[0]).price,
+      addToCart: () => this.setState({ cart: s.cart + 1, product: null }),
+      closeProduct: () => this.setState({ product: null }),
+      noop: () => {}
+    };
+  }
+}
+
+</script>
+</body>
+</html>
